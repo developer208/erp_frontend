@@ -2,13 +2,20 @@
 import React, { useState } from "react";
 import { BsPlusLg, BsGrid3X3Gap } from "react-icons/bs";
 import { AiOutlineUnorderedList } from "react-icons/ai";
-import Table from "../../../components/Table/Table";
+import Table from "../../../../../components/Table/Table";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Loading } from "@/app/components/Loading/Loading";
 import { AddToCourse } from "@/app/components/Button/Button";
-export default function Course() {
+import { ValueGetterParams } from "ag-grid-community";
+import { courseData } from "@/app/interface";
+import { Year } from "@/app/utils/customYear";
+import { useParams } from "next/navigation";
+import { toast } from "react-toastify";
+import { CustomAxiosError } from "@/app/utils/customError";
+export default function Enroll() {
+  const params = useParams<{ id: string }>();
   const [isActive, setIsActive] = useState(false);
   let { data, isLoading, refetch } = useQuery({
     queryKey: ["courses"],
@@ -21,12 +28,50 @@ export default function Course() {
       );
     },
   });
+
+  const mutation = useMutation({
+    mutationKey: ["Assign"],
+    mutationFn: (i: courseData) => {
+      return axios.post(
+        "http://localhost:4500/backend-api/assign/add",
+        {
+          user_id: Number(params.id),
+          course_id: i.id,
+          sem: i.sem,
+          year: Year(),
+        },
+        {
+          withCredentials: true,
+        }
+      );
+    },
+    onSuccess(data, variables, context) {
+      toast.success(data.data.msg);
+    },
+    onError(error: CustomAxiosError, variables, context) {
+      let message: string = error.response?.data?.msg
+        ? error.response?.data?.msg
+        : "Api Error";
+      toast.error(message);
+    },
+  });
+
+  const handleAdd = (props: courseData) => {
+    mutation.mutate(props);
+  };
+
   let column = [
     { field: "id", filter: true },
     { field: "course_name", filter: true },
     { field: "credits" },
     { field: "sem" },
     { field: "department_name" },
+    {
+      field: "Add",
+      cellRenderer: (props: ValueGetterParams) => (
+        <AddToCourse func={handleAdd} {...props} />
+      ),
+    },
   ];
   return (
     <main className="">

@@ -8,3 +8,7 @@
 scrollbar-width: none;
 /* For IE 10 and 11 */
 -ms-overflow-style: none;
+
+body {
+  overflow: hidden;
+}

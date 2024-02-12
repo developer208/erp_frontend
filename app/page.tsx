@@ -3,10 +3,50 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { CustomAxiosError } from "./utils/customError";
+import { getRole } from "./utils/getRole";
+interface Credential {
+  email: string;
+  password: string;
+}
 
 export default function Home() {
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [pass, setPassword] = useState("");
+  const [uname, setUsername] = useState("");
+
+  const router = useRouter();
+  const mutation = useMutation({
+    mutationKey: ["login"],
+    mutationFn: (cred: Credential) => {
+      return axios.post("http://localhost:4500/backend-api/auth/login", cred, {
+        withCredentials: true, // Include credentials (cookies) with the request
+      });
+    },
+    onSuccess(data, variables, context) {
+      let access: string = getRole(data.data.role);
+      toast.success(data.data?.msg);
+      if (access === "ADMIN") {
+        router.push("/admin/dashboard");
+      } else if (access === "PROFESSOR") {
+        router.push(`/professor/dashboard/${data.data.id}`);
+      } else {
+        router.push(`/student/dashboard/${data.data.id}`);
+      }
+    },
+    onError(error: CustomAxiosError, variables, context) {
+      let message: string = error.response?.data?.msg
+        ? error.response?.data?.msg
+        : "Api Error";
+      toast.error(message);
+    },
+  });
+
+  console.log("component re-rendered ");
+
   return (
     <main className="  text-purple-600 h-[100vh] flex justify-center items-center flex-col gap-y-3 ">
       <div className=" w-[100vw] h-[100vh] ">
@@ -36,7 +76,7 @@ export default function Home() {
                   </label>
                   <div className="mt-2">
                     <input
-                      value={username}
+                      value={uname}
                       onChange={(e) => setUsername(e.target.value)}
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="text"
@@ -60,7 +100,7 @@ export default function Home() {
                   </div>
                   <div className="mt-2">
                     <input
-                      value={password}
+                      value={pass}
                       onChange={(e) => setPassword(e.target.value)}
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="password"
@@ -68,30 +108,19 @@ export default function Home() {
                     ></input>
                   </div>
                 </div>
-                <div className="flex justify-evenly">
-                  <div className="flex gap-2">
-                    <input type="radio" name="name" id="btn" />
-                    <label htmlFor="">Admin</label>
-                  </div>
-                  <div className="flex gap-2">
-                    <input type="radio" name="name" id="btn1" />
-                    <label htmlFor="">Professor</label>
-                  </div>
-                  <div className="flex gap-2">
-                    <input type="radio" name="name" id="btn2" />
-                    <label htmlFor="">Student</label>
-                  </div>
-                </div>
                 <div>
-                  <Link href="/admin/dashboard" scroll={true}>
-                    <button
-                      type="button"
-                      // onClick={(e) => handleLogin()}
-                      className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
-                    >
-                      Sign In <ArrowRight className="ml-2" size={16} />
-                    </button>
-                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      mutation.mutate({
+                        email: uname,
+                        password: pass,
+                      });
+                    }}
+                    className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
+                  >
+                    Sign In <ArrowRight className="ml-2" size={16} />
+                  </button>
                 </div>
               </div>
             </form>

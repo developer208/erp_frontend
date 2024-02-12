@@ -1,90 +1,42 @@
 "use client";
-import React, { useState } from "react";
-import Table from "../../../components/Table/Table";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowUp } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import { FcDepartment } from "react-icons/fc";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Loading } from "@/app/components/Loading/Loading";
 import { toast } from "react-toastify";
 import { CustomAxiosError } from "@/app/utils/customError";
-import { deptInfo, fullDeptinfo } from "@/app/interface";
-import { ValueGetterParams } from "ag-grid-community";
-import {
-  DeptDeleteButton,
-  DeptEditButton,
-} from "../../../components/Button/Button";
 import { useRouter } from "next/navigation";
-import { customDeleteDepartment } from "@/app/interface";
+import { useParams } from "next/navigation";
 type props = {};
 
 export default function Page(Props: props) {
   const [isUp, setIsUp] = useState(false);
-  const [name, setName] = useState("");
-  const [code, setCode] = useState("");
   const router = useRouter();
+  const params = useParams<{ id: string }>();
+
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["departments"],
+    queryKey: ["department"],
     queryFn: () => {
       return axios.get(
-        "http://localhost:4500/backend-api/department/all-department",
+        `http://localhost:4500/backend-api/department/info-department?code=${params.id}`,
         {
           withCredentials: true,
         }
       );
     },
+    enabled: true,
   });
 
-  const mutation = useMutation({
-    mutationKey: ["addDept"],
-    mutationFn: (info: deptInfo) => {
-      return axios.post(
-        "http://localhost:4500/backend-api/department/add-department",
-        info,
-        {
-          withCredentials: true,
-        }
-      );
-    },
-    onSuccess(data, variables, context) {
-      toast.success(data.data.msg);
-      refetch();
-    },
-    onError(error: CustomAxiosError, variables, context) {
-      let message: string = error.response?.data?.msg
-        ? error.response?.data?.msg
-        : "Api Error";
-      toast.error(message);
-    },
-  });
-  const delMutation = useMutation({
-    mutationKey: ["delDept"],
-    mutationFn: (code: string) => {
-      return axios.delete(
-        `http://localhost:4500/backend-api/department/delete-department?code=${code}`,
-        {
-          withCredentials: true,
-        }
-      );
-    },
-    onSuccess(data, variables, context) {
-      toast.success(data.data.msg);
-      refetch();
-    },
-    onError(error: CustomAxiosError, variables, context) {
-      let message: string = error.response?.data?.msg
-        ? error.response?.data?.msg
-        : "Api Error";
-      toast.error(message);
-    },
-  });
+  const [name, setName] = useState(data?.data.data.code);
+  const [code, setCode] = useState(data?.data.data.name);
 
   const editMutation = useMutation({
     mutationKey: ["editDept"],
-    mutationFn: (code: string) => {
+    mutationFn: (code1: string) => {
       return axios.put(
-        `http://localhost:4500/backend-api/department/edit-department?code =${code}`,
+        `http://localhost:4500/backend-api/department/edit-department?code=${code1}`,
         { name, code },
         {
           withCredentials: true,
@@ -93,6 +45,7 @@ export default function Page(Props: props) {
     },
     onSuccess(data, variables, context) {
       toast.success(data.data.msg);
+      router.push("/admin/dashboard/departments");
     },
     onError(error: CustomAxiosError, variables, context) {
       let message: string = error.response?.data?.msg
@@ -102,48 +55,32 @@ export default function Page(Props: props) {
     },
   });
 
-  const handleDepartment = (e: any) => {
+  const handleEditDepartment = (e: any) => {
     e.preventDefault();
-    console.log("exec");
     if (name !== "" && code !== "") {
-      mutation.mutate({
-        name,
-        code,
-      });
+      editMutation.mutate(params.id);
     } else {
-      console.log("ex");
       toast.warning("feild is empty");
     }
-  };
-  const handleDelete = (props: fullDeptinfo) => {
-    // You can trigger the delete mutation here using delMutation.mutate()
-
-    delMutation.mutate(props.code);
-    console.log(props);
-  };
-
-  const handleEdit = (props: fullDeptinfo) => {
-    router.push(`/admin/dashboard/departments/${props.code}`);
   };
 
   let column = [
     { field: "code", filter: true },
     { field: "name", filter: true },
-    {
-      field: "Edit",
-      cellRenderer: (props: ValueGetterParams) => (
-        <DeptEditButton func={handleEdit} {...props} />
-      ),
-      width: 90,
-    },
-    {
-      field: "Delete",
-      cellRenderer: (props: ValueGetterParams) => (
-        <DeptDeleteButton func={handleDelete} {...props} />
-      ),
-      width: 90,
-    },
   ];
+
+  useEffect(() => {
+    setCode(data?.data.data.code);
+    setName(data?.data.data.name);
+    console.log("useEffect Ran");
+  }, [data]);
+
+  useEffect(() => {
+    return () => {
+      setCode("");
+      setName("");
+    };
+  }, []);
 
   return (
     <main>
@@ -179,7 +116,7 @@ export default function Page(Props: props) {
             <div className="mt-[10px] bg-[#dee2e6] h-[400px] mx-3 lg:mx-5 rounded-md">
               <div className="text-black h-[70px] flex gap-x-3 border-y-2 border-black">
                 <h1 className=" text-2xl sm:text-4xl mt-3 ml-5 flex items-center ">
-                  New Department
+                  Edit Department {params.id}
                 </h1>
                 <div className="mt-3 flex items-center ">
                   <FcDepartment size={35} />
@@ -218,25 +155,15 @@ export default function Page(Props: props) {
                   <div className="flex  justify-end">
                     <button
                       type="button"
-                      onClick={(e) => handleDepartment(e)}
+                      onClick={(e) => handleEditDepartment(e)}
                       className="w-[140px] mr-5 mb-4 text-black rounded-3xl bg-purple-400 h-[42px]  active:bg-purple-500"
                     >
-                      Add
+                      Edit
                     </button>
                   </div>
                 </div>
               </form>
             </div>
-          </div>
-          <div className="lg:w-[60%] mt-[10px] ">
-            <h1 className=" ml-5 mb-4 font-semibold  text-2xl lg:hidden ">
-              List Of Departments
-            </h1>
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <Table rowData={data?.data.list} colDefs={column} />
-            )}
           </div>
         </div>
       </div>

@@ -1,17 +1,21 @@
 "use client";
-import React, { MouseEventHandler, useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { FaRegUser } from "react-icons/fa";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import { fullDeptinfo } from "@/app/interface";
+import axios from "axios";
 import { generatepass } from "@/app/utils/generatepassword";
+import { useMutation } from "@tanstack/react-query";
 import { decodeRole } from "@/app/utils/getRole";
 import { toast } from "react-toastify";
 import { CustomAxiosError } from "@/app/utils/customError";
-import { useRouter } from "next/navigation";
 type props = {};
 
 export default function Dashboard(Props: props) {
+  const params = useParams<{ id: string }>();
   const router = useRouter();
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["departments"],
@@ -37,13 +41,6 @@ export default function Dashboard(Props: props) {
   const [department_name, setDepartmentName] = useState("");
   const [role, setRole] = useState("");
 
-  useEffect(() => {
-    if (firstName !== "" && lastName !== "") {
-      let result = `${firstName}.${lastName}@vit.edu.in`;
-      setEmail(result);
-    }
-  }, [firstName, lastName]);
-
   const mutation = useMutation({
     mutationKey: ["Register"],
     mutationFn: () => {
@@ -53,7 +50,7 @@ export default function Dashboard(Props: props) {
           firstName,
           middleName,
           lastName,
-          email: email.toLowerCase(),
+          email,
           phoneNo: phoneNo,
           passout_year: Number(passout_year),
           joining_year: Number(joining_year),
@@ -104,7 +101,7 @@ export default function Dashboard(Props: props) {
       <div className="pt-[70px]"></div>
       <div className="mt-[120px] rounded-xl bg-white min-h-[500px] mx-3 lg:mx-5">
         <div className="text-black h-[70px] flex gap-x-3 border-y-2  border-black">
-          <h1 className="text-4xl mt-3 ml-5">New User</h1>
+          <h1 className="text-4xl mt-3 ml-5">Edit User</h1>
           <div className="mt-3">
             <FaRegUser size={35} />
           </div>
@@ -151,7 +148,7 @@ export default function Dashboard(Props: props) {
               <input
                 type="text"
                 readOnly
-                value={email.toLowerCase()}
+                value={email}
                 className="w-[90%] sm:w-[60%] h-[40px] border-b-2 bg-white text-2xl border-black  mx-3 "
               />
             </div>

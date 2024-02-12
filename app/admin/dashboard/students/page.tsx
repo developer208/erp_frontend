@@ -11,6 +11,8 @@ import { customUserList } from "@/app/utils/getRole";
 import EnrollButton, { ViewAssigned } from "@/app/components/Button/Button";
 import { ValueGetterParams } from "ag-grid-community";
 import { useRouter } from "next/navigation";
+import YearPicker from "react-year-picker";
+import { cal_data } from "@/app/utils/CalData";
 type Props = {};
 
 const Page = (props: Props) => {
@@ -18,11 +20,12 @@ const Page = (props: Props) => {
   const [isActive, setIsActive] = useState(false);
   const [isUp, setIsUp] = useState(false);
   const [dept, setDept] = useState("");
+  const [batch, setBatch] = useState("");
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ["professors"],
+    queryKey: ["students"],
     queryFn: () => {
       return axios.get(
-        `http://localhost:4500/backend-api/admin/professors?department=${dept}`,
+        `http://localhost:4500/backend-api/student/students-list?dept=${dept}&batch=${batch}`,
         {
           withCredentials: true,
         }
@@ -52,7 +55,7 @@ const Page = (props: Props) => {
 
   useEffect(() => {
     refetch();
-  }, [dept]);
+  }, [dept, batch]);
 
   const deptFullData: Array<fullDeptinfo> = deptData?.data.list;
 
@@ -86,7 +89,7 @@ const Page = (props: Props) => {
         <div className="">
           <div className="flex justify-between items-center  h-[120px] ">
             <div className="w-[250px] ml-5 ">
-              <h1 className="text-2xl text-white">Professors</h1>
+              <h1 className="text-2xl text-white">Students</h1>
             </div>
           </div>
           <div className="flex justify-between flex-col-reverse gap-y-3 lg:flex-row lg:gap-y-0 mb-5">
@@ -107,6 +110,23 @@ const Page = (props: Props) => {
                         value={item.code}
                       >
                         {item.code}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="bg-[#212529] w-[140px] h-[40px] flex items-center justify-center  border-[1px] border-gray-600 rounded-3xl ">
+                <select
+                  onChange={(e) => setBatch(e.target.value)}
+                  className="bg-[#212529] text-white  "
+                >
+                  <option className="bg-[#212529]  " hidden>
+                    Batch
+                  </option>
+                  {cal_data?.map((item: string) => {
+                    return (
+                      <option key={item} className="bg-[#212529] " value={item}>
+                        {item}
                       </option>
                     );
                   })}

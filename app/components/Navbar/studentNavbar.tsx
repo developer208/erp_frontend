@@ -10,7 +10,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 type Props = {};
 
-export default function Navbar({}: Props) {
+export default function StudNavbar({}: Props) {
   const router = useRouter();
   const mutation = useMutation({
     mutationKey: ["Logout"],
@@ -39,56 +39,41 @@ export default function Navbar({}: Props) {
   const [hamburgerState, setHamburgerState] = useState(true);
   return (
     <div className="border-b-2 fixed w-[100vw]   z-10  border-gray-700">
-      <nav className="text-white   h-[70px] w-[100vw] bg-[#212529] flex justify-between bg-opacity-20 backdrop-filter backdrop-blur-lg   ">
+      <nav className="text-white   h-[70px] w-[100vw] bg-[#0077b6] flex justify-between bg-opacity-20 backdrop-filter backdrop-blur-lg   ">
         <div className="flex lg:gap-x-28">
           <div className="w-[70px] flex items-center hover:cursor-pointer mx-5  font-bold ">
             VIT
           </div>
-          <div className="lg:flex w-[750px]  gap-x-16 lg:items-center hidden   ">
+          <div className="lg:flex w-[700px]  gap-x-16 lg:items-center hidden   ">
             <Link href="/admin/dashboard">
-              <div className="hover:cursor-pointer hover:text-purple-500">
+              <div className="hover:cursor-pointer hover:text-black">
                 Dashboard
               </div>
             </Link>
-            <Link href="/admin/dashboard/users">
-              <div className="hover:cursor-pointer hover:text-purple-500">
-                User
-              </div>
-            </Link>
             <Link href="/admin/dashboard/courses">
-              <div className="hover:cursor-pointer hover:text-purple-500">
-                Courses
+              <div className="hover:cursor-pointer hover:text-black">
+                Result
               </div>
             </Link>
             <Link href="/admin/dashboard/departments">
-              <div className="hover:cursor-pointer hover:text-purple-500">
-                Department
-              </div>
-            </Link>
-            <Link href="/admin/dashboard/professors">
-              <div className="hover:cursor-pointer hover:text-purple-500">
-                Professor
-              </div>
-            </Link>
-            <Link href="/admin/dashboard/students">
-              <div className="hover:cursor-pointer hover:text-purple-500">
-                Student
+              <div className="hover:cursor-pointer hover:text-black">
+                Attendence
               </div>
             </Link>
           </div>
         </div>
         <div className="w-[130px]  lg:w-[130px]  flex items-center lg:justify-around hover:cursor-pointer justify-around mx-5 ">
-          <div className=" hover:text-purple-500">
+          <div className=" hover:text-black">
             <PiUserCircle size={28} />
           </div>
-          <button
+          <div
             onClick={() => {
               mutation.mutate();
             }}
-            className=" hidden lg:flex hover:text-purple-500 "
+            className=" hidden lg:flex hover:text-black "
           >
             Logout
-          </button>
+          </div>
           {hamburgerState ? (
             <div
               className="lg:hidden ml-3 "
@@ -121,20 +106,12 @@ export default function Navbar({}: Props) {
             Dashboard
           </div>
         </Link>
-        <Link href="/admin/dashboard/users">
-          <div
-            className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
-            onClick={() => setHamburgerState(!hamburgerState)}
-          >
-            User
-          </div>
-        </Link>
         <Link href="/admin/dashboard/courses">
           <div
             className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
             onClick={() => setHamburgerState(!hamburgerState)}
           >
-            Courses
+            Result
           </div>
         </Link>
         <Link href="/admin/dashboard/departments">
@@ -142,33 +119,19 @@ export default function Navbar({}: Props) {
             className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
             onClick={() => setHamburgerState(!hamburgerState)}
           >
-            Departments
+            Attendence
           </div>
         </Link>
-        <Link href="/admin/dashboard/professors">
+        <Link href="/">
           <div
             className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
-            onClick={() => setHamburgerState(!hamburgerState)}
+            onClick={() => {
+              mutation.mutate();
+            }}
           >
-            Professor
+            Logout
           </div>
         </Link>
-        <Link href="/admin/dashboard/students">
-          <div
-            className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
-            onClick={() => setHamburgerState(!hamburgerState)}
-          >
-            Student
-          </div>
-        </Link>
-        <button
-          className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
-          onClick={() => {
-            mutation.mutate();
-          }}
-        >
-          Logout
-        </button>
       </div>
     </div>
   );
