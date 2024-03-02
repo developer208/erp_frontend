@@ -98,7 +98,7 @@ export default function Dashboard(Props: props) {
     },
     onSuccess(data, variables, context) {
       toast.success(data.data.msg);
-      // router.push("/admin/dashboard/users");
+      router.push("/admin/dashboard/users");
     },
     onError(error: CustomAxiosError, variables, context) {
       let message: string = error.response?.data?.msg

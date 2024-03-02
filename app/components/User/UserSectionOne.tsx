@@ -11,7 +11,7 @@ import axios from "axios";
 import { Loading } from "../Loading/Loading";
 import { customUserList, decodeRole } from "@/app/utils/getRole";
 import { UserDeleteButton, UserEditButton } from "../Button/Button";
-import { fullUserData, userData } from "@/app/interface";
+import { fullDeptinfo, fullUserData, userData } from "@/app/interface";
 import { ValueGetterParams } from "ag-grid-community";
 import { CustomAxiosError } from "@/app/utils/customError";
 import { toast } from "react-toastify";
@@ -57,6 +57,22 @@ export default function UserSectionOne({}: Props) {
     },
   });
 
+  const {
+    data: data1,
+    isLoading: isLoading1,
+    refetch: refech1,
+  } = useQuery({
+    queryKey: ["departments"],
+    queryFn: () => {
+      return axios.get(
+        "http://localhost:4500/backend-api/department/all-department",
+        {
+          withCredentials: true,
+        }
+      );
+    },
+  });
+
   const handleDelete = (props: userData) => {
     delMutation.mutate(props.rollNo);
   };
@@ -89,6 +105,7 @@ export default function UserSectionOne({}: Props) {
       width: 90,
     },
   ];
+  const deptData: Array<fullDeptinfo> = data1?.data.list;
 
   useEffect(() => {
     refetch();
@@ -138,25 +155,16 @@ export default function UserSectionOne({}: Props) {
               onChange={(e) => setDept(e.target.value)}
               className="bg-[#212529] text-white  "
             >
-              <option className="bg-[#212529] " hidden>
-                Branch
+              <option className="bg-[#212529]  " hidden>
+                Department
               </option>
-              <option value="">ALL</option>
-              <option value="CMPN" className="bg-[#212529] ">
-                CMPN
-              </option>
-              <option value="INFT" className="bg-[#212529] ">
-                INFT
-              </option>
-              <option value="EXTC" className="bg-[#212529] ">
-                EXTC
-              </option>
-              <option value="ETRX" className="bg-[#212529] ">
-                ETRX
-              </option>
-              <option value="BIOM" className="bg-[#212529] ">
-                BIOM
-              </option>
+              {deptData?.slice(1).map((item: fullDeptinfo) => {
+                return (
+                  <option key={item.id} value={item.code}>
+                    {item.code}
+                  </option>
+                );
+              })}
             </select>
           </div>
           {/* <div className="bg-[#212529]  w-[120px] h-[40px] flex items-center justify-center border-[1px] border-gray-600 rounded-3xl ">

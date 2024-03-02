@@ -83,7 +83,7 @@ const Page = (props: Props) => {
     <main className="">
       <div className="w-[100vw] h-[350px] bg-[#212529]">
         <div className="h-[70px]"></div>
-        <div className="">
+        <div className="mr-3">
           <div className="flex justify-between items-center  h-[120px] ">
             <div className="w-[250px] ml-5 ">
               <h1 className="text-2xl text-white">Professors</h1>
@@ -99,7 +99,7 @@ const Page = (props: Props) => {
                   <option className="bg-[#212529] " hidden>
                     Department
                   </option>
-                  {deptFullData?.map((item: fullDeptinfo) => {
+                  {deptFullData.slice(1)?.map((item: fullDeptinfo) => {
                     return (
                       <option
                         key={item.id}

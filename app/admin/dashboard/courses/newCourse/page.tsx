@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 type props = {};
 
 export default function Page(Props: props) {
+  const [file, setFile] = useState(null);
+  const formData = new FormData();
   const router = useRouter();
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["departments"],
@@ -59,6 +61,32 @@ export default function Page(Props: props) {
       toast.error(message);
     },
   });
+  const mutation1 = useMutation({
+    mutationKey: ["RegisterMultiple"],
+    mutationFn: () => {
+      console.log(formData.get("file"));
+      return axios.post(
+        "http://localhost:4500/backend-api/course/add-multiple-course",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+    },
+    onSuccess(data, variables, context) {
+      toast.success(data.data.msg);
+      router.push("/admin/dashboard/courses");
+    },
+    onError(error: CustomAxiosError, variables, context) {
+      let message: string = error.response?.data?.msg
+        ? error.response?.data?.msg
+        : "Api Error";
+      toast.error(message);
+    },
+  });
 
   const handleAddCourse = (e: any) => {
     e.preventDefault();
@@ -75,11 +103,46 @@ export default function Page(Props: props) {
     }
   };
 
+  const handleFileChange = (e: any) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (file) {
+      formData.append("file", file);
+    }
+    console.log(file);
+    mutation1.mutate();
+  };
+
   return (
     <main>
       <div className="w-[100vw] h-[350px] bg-[#212529]">
         <div className="h-[70px]"></div>
-        <div className="mt-[120px] bg-[#dee2e6] min-h-[500px] mx-3 lg:mx-5">
+        <form className="flex w-[100vw] justify-end" onSubmit={handleSubmit}>
+          <div className="w-[350px] mt-5 mr-5 flex flex-col items-end  gap-3   ">
+            <div className="h-full flex flex-col gap-3 ">
+              <h1 className="text-white font-bold text-2xl py-2 ">
+                Add Excel (.csv)
+              </h1>
+              <input
+                type="file"
+                className="w-[300px] rounded-md hover:cursor-pointer text-white "
+                onChange={handleFileChange}
+                name="file"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-[100px] text-black rounded-sm bg-purple-400 h-[42px]  active:bg-purple-500 mr-5  "
+            >
+              Add
+            </button>
+          </div>
+        </form>
+        <div className="mt-[80px] bg-[#dee2e6] min-h-[500px] mx-3 lg:mx-5">
           <div className="text-black h-[70px] flex gap-x-3 border-y-2 border-black">
             <h1 className="text-4xl mt-3 ml-5">New Course</h1>
             <div className="mt-3">

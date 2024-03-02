@@ -107,3 +107,28 @@ export function RemoveAssign(props: customAssign) {
     </button>
   );
 }
+
+export function CourseEditButton(props: customCourseData) {
+  return (
+    <button
+      onClick={() => {
+        props.func(props.data);
+      }}
+      className="hover:text-purple-600 cursor-pointer "
+    >
+      <FiEdit size={28} style={{ color: "black" }} />
+    </button>
+  );
+}
+export function CourseDeleteButton(props: customCourseData) {
+  return (
+    <button
+      onClick={() => {
+        props.func(props.data);
+      }}
+      className="hover:text-purple-600 cursor-pointer "
+    >
+      <MdDelete size={28} style={{ color: "red" }} />;
+    </button>
+  );
+}
