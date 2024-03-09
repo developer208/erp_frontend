@@ -20,7 +20,7 @@ export default function Page(Props: props) {
     queryKey: ["department"],
     queryFn: () => {
       return axios.get(
-        `http://localhost:4500/backend-api/department/info-department?code=${params.id}`,
+        `${process.env.DOMAIN}/backend-api/department/info-department?code=${params.id}`,
         {
           withCredentials: true,
         }
@@ -36,7 +36,7 @@ export default function Page(Props: props) {
     mutationKey: ["editDept"],
     mutationFn: (code1: string) => {
       return axios.put(
-        `http://localhost:4500/backend-api/department/edit-department?code=${code1}`,
+        `${process.env.DOMAIN}/backend-api/department/edit-department?code=${code1}`,
         { name, code },
         {
           withCredentials: true,

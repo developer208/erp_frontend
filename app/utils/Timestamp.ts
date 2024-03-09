@@ -19,9 +19,19 @@ export default function displayTimeStamp(): string {
   const b = a.split(":");
   console.log(b);
   let c = b[0] + b[1];
-  if (Number(c) >= 0 && Number(c) <= 1159) {
+  let d = "";
+  let valid = true;
+  for (let i = 0; i < c.length; i++) {
+    if (c[i] === "0" && valid) {
+      continue;
+    } else {
+      d = d + c[i];
+      valid = false;
+    }
+  }
+  if (d === "" || (Number(d) >= 0 && Number(d) <= 1159)) {
     return "Good Morning";
-  } else if (Number(c) >= 1200 && Number(c) <= 1759) {
+  } else if (Number(d) >= 1200 && Number(d) <= 1759) {
     return "Good Afternoon";
   } else {
     return "Good Evening";

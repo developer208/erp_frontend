@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios from "axios";
 import { CustomAxiosError } from "./utils/customError";
 import { getRole } from "./utils/getRole";
 interface Credential {

@@ -61,7 +61,18 @@ export function UserDeleteButton(props: customDeleteUser) {
   );
 }
 
-export default function EnrollButton(props: customDeleteUser) {
+export function AssignButton(props: customDeleteUser) {
+  return (
+    <button
+      onClick={() => props.func(props.data)}
+      className="text-white font-bold w-[80px] h-[30px] flex items-center justify-center mt-[5px] rounded-2xl bg-blue-600  hover:bg-blue-800 "
+    >
+      Assign
+    </button>
+  );
+}
+
+export function EnrollButton(props: customDeleteUser) {
   return (
     <button
       onClick={() => props.func(props.data)}

@@ -22,7 +22,7 @@ export default function Subjects() {
     queryKey: ["assigned-courses"],
     queryFn: () => {
       return axios.get(
-        `http://localhost:4500/backend-api/admin/assigned-courses?sem=&year=&user_id=${params.id}`,
+        `${process.env.DOMAIN}/backend-api/admin/assigned-courses?sem=&year=&user_id=${params.id}`,
         {
           withCredentials: true,
         }
@@ -34,7 +34,7 @@ export default function Subjects() {
     mutationKey: ["Assign"],
     mutationFn: (i: courseData) => {
       return axios.post(
-        "http://localhost:4500/backend-api/assign/add",
+        `${process.env.DOMAIN}/backend-api/assign/add`,
         {
           user_id: Number(params.id),
           course_id: i.id,

@@ -21,7 +21,7 @@ export default function Dashboard(Props: props) {
     queryKey: ["departments"],
     queryFn: () => {
       return axios.get(
-        "http://localhost:4500/backend-api/department/all-department",
+        `${process.env.DOMAIN}/backend-api/department/all-department`,
         {
           withCredentials: true,
         }
@@ -45,7 +45,7 @@ export default function Dashboard(Props: props) {
     mutationKey: ["Register"],
     mutationFn: () => {
       return axios.post(
-        "http://localhost:4500/backend-api/auth/register",
+        `${process.env.DOMAIN}/backend-api/auth/register`,
         {
           firstName,
           middleName,

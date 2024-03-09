@@ -8,9 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { fullDeptinfo, fullUserData } from "@/app/interface";
 import { customUserList } from "@/app/utils/getRole";
-import EnrollButton, { ViewAssigned } from "@/app/components/Button/Button";
+import { AssignButton, ViewAssigned } from "@/app/components/Button/Button";
 import { ValueGetterParams } from "ag-grid-community";
 import { useRouter } from "next/navigation";
+
 type Props = {};
 
 const Page = (props: Props) => {
@@ -22,7 +23,7 @@ const Page = (props: Props) => {
     queryKey: ["professors"],
     queryFn: () => {
       return axios.get(
-        `http://localhost:4500/backend-api/admin/professors?department=${dept}`,
+        `${process.env.DOMAIN}/backend-api/admin/professors?department=${dept}`,
         {
           withCredentials: true,
         }
@@ -34,7 +35,7 @@ const Page = (props: Props) => {
     queryKey: ["departments"],
     queryFn: () => {
       return axios.get(
-        "http://localhost:4500/backend-api/department/all-department",
+        `${process.env.DOMAIN}/backend-api/department/all-department`,
         {
           withCredentials: true,
         }
@@ -66,9 +67,9 @@ const Page = (props: Props) => {
     { field: "role" },
     { headerName: "Department", field: "department_name" },
     {
-      field: "Enroll",
+      field: "Assign",
       cellRenderer: (props: ValueGetterParams) => (
-        <EnrollButton func={handleEnroll} {...props} />
+        <AssignButton func={handleEnroll} {...props} />
       ),
     },
     {
@@ -99,7 +100,7 @@ const Page = (props: Props) => {
                   <option className="bg-[#212529] " hidden>
                     Department
                   </option>
-                  {deptFullData.slice(1)?.map((item: fullDeptinfo) => {
+                  {deptFullData?.slice(1)?.map((item: fullDeptinfo) => {
                     return (
                       <option
                         key={item.id}

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsPlusLg, BsGrid3X3Gap } from "react-icons/bs";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import Table from "../../../../../components/Table/Table";
@@ -9,19 +9,36 @@ import axios from "axios";
 import { Loading } from "@/app/components/Loading/Loading";
 import { AddToCourse } from "@/app/components/Button/Button";
 import { ValueGetterParams } from "ag-grid-community";
-import { courseData } from "@/app/interface";
+import { courseData, fullDeptinfo } from "@/app/interface";
 import { Year } from "@/app/utils/customYear";
 import { useParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { CustomAxiosError } from "@/app/utils/customError";
 export default function Enroll() {
+  const [sem, setSem] = useState("");
+  const [dept, setDept] = useState("");
   const params = useParams<{ id: string }>();
   const [isActive, setIsActive] = useState(false);
   let { data, isLoading, refetch } = useQuery({
     queryKey: ["courses"],
     queryFn: () => {
       return axios.get(
-        `http://localhost:4500/backend-api/course/all-courses?sem&department`,
+        `${process.env.DOMAIN}/backend-api/course/all-courses?sem=${sem}&department=${dept}`,
+        {
+          withCredentials: true,
+        }
+      );
+    },
+  });
+  const {
+    data: data1,
+    isLoading: isLoading1,
+    refetch: refetch1,
+  } = useQuery({
+    queryKey: ["departments"],
+    queryFn: () => {
+      return axios.get(
+        `${process.env.DOMAIN}/backend-api/department/all-department`,
         {
           withCredentials: true,
         }
@@ -33,7 +50,7 @@ export default function Enroll() {
     mutationKey: ["Assign"],
     mutationFn: (i: courseData) => {
       return axios.post(
-        "http://localhost:4500/backend-api/assign/add",
+        `${process.env.DOMAIN}/backend-api/assign/add`,
         {
           user_id: Number(params.id),
           course_id: i.id,
@@ -73,6 +90,12 @@ export default function Enroll() {
       ),
     },
   ];
+
+  const deptData: Array<fullDeptinfo> = data1?.data.list;
+  useEffect(() => {
+    refetch();
+  }, [sem, dept]);
+
   return (
     <main className="">
       <div className="w-[100vw] h-[350px] bg-[#212529] ">
@@ -83,37 +106,56 @@ export default function Enroll() {
               <div className="w-[250px] ml-5 ">
                 <h1 className="text-2xl text-white">Courses</h1>
               </div>
-              <div className="mr-5">
-                <Link href="/admin/dashboard/courses/newCourse">
-                  <button className="w-[150px] flex items-center gap-x-2 text-black rounded-3xl bg-purple-400 h-[42px]  active:bg-purple-500">
-                    <div className="ml-3">
-                      <BsPlusLg size={20} />
-                    </div>
-                    <p className="">Add Course</p>
-                  </button>
-                </Link>
-              </div>
             </div>
             <div className="flex justify-between flex-col-reverse gap-y-3 lg:flex-row lg:gap-y-0 mb-5">
               <div className="flex gap-x-3 ml-5">
                 <div className="bg-[#212529] w-[140px] h-[40px] flex items-center justify-center border-[1px] border-gray-600 rounded-3xl ">
-                  <select className="bg-[#212529] text-white hover:cursor-pointer ">
+                  <select
+                    onChange={(e) => setSem(e.target.value)}
+                    className="bg-[#212529] text-white hover:cursor-pointer "
+                  >
                     <option hidden>Semester</option>
-                    <option className="bg-[#212529]  ">First</option>
-                    <option className="bg-[#212529]  ">Second</option>
-                    <option className="bg-[#212529]  ">Third</option>
+                    <option className="bg-[#212529]  " value="1">
+                      One
+                    </option>
+                    <option className="bg-[#212529]  " value="2">
+                      Two
+                    </option>
+                    <option className="bg-[#212529]  " value="3">
+                      Three
+                    </option>
+                    <option className="bg-[#212529]  " value="4">
+                      Four
+                    </option>
+                    <option className="bg-[#212529]  " value="5">
+                      Five
+                    </option>
+                    <option className="bg-[#212529]  " value="6">
+                      Six
+                    </option>
+                    <option className="bg-[#212529]  " value="7">
+                      Seven
+                    </option>
+                    <option className="bg-[#212529]  " value="8">
+                      Eight
+                    </option>
                   </select>
                 </div>
                 <div className="bg-[#212529] w-[150px] h-[40px] flex items-center justify-center  border-[1px] border-gray-600 rounded-3xl ">
-                  <select className="bg-[#212529] text-white  hover:cursor-pointer">
+                  <select
+                    onChange={(e) => setDept(e.target.value)}
+                    className="bg-[#212529] text-white  hover:cursor-pointer"
+                  >
                     <option className="bg-[#212529]  " hidden>
                       Department
                     </option>
-                    <option className="bg-[#212529] ">CMPN</option>
-                    <option className="bg-[#212529] ">INFT</option>
-                    <option className="bg-[#212529] ">EXTC</option>
-                    <option className="bg-[#212529] ">ETRX</option>
-                    <option className="bg-[#212529] ">BIOM</option>
+                    {deptData?.slice(1).map((item: fullDeptinfo) => {
+                      return (
+                        <option key={item.id} value={item.code}>
+                          {item.code}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
               </div>
