@@ -23,7 +23,7 @@ export default function Enroll() {
     queryKey: ["courses"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/course/all-courses?sem=${sem}&department=${dept}`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/course/all-courses?sem=${sem}&department=${dept}`,
         {
           withCredentials: true,
         }
@@ -38,7 +38,7 @@ export default function Enroll() {
     queryKey: ["departments"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/department/all-department`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/department/all-department`,
         {
           withCredentials: true,
         }
@@ -50,7 +50,7 @@ export default function Enroll() {
     mutationKey: ["Assign"],
     mutationFn: (i: courseData) => {
       return axios.post(
-        `${process.env.DOMAIN}/backend-api/assign/add`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/assign/add`,
         {
           user_id: Number(params.id),
           course_id: i.id,

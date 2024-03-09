@@ -22,9 +22,13 @@ export default function Home() {
   const mutation = useMutation({
     mutationKey: ["login"],
     mutationFn: (cred: Credential) => {
-      return axios.post("http://localhost:4500/backend-api/auth/login", cred, {
-        withCredentials: true, // Include credentials (cookies) with the request
-      });
+      return axios.post(
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/auth/login`,
+        cred,
+        {
+          withCredentials: true, // Include credentials (cookies) with the request
+        }
+      );
     },
     onSuccess(data, variables, context) {
       let access: string = getRole(data.data.role);

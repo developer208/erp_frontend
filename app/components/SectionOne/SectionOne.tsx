@@ -22,9 +22,12 @@ export default function SectionOne({}: Props) {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["Total-Users"],
     queryFn: () => {
-      return axios.get(`${process.env.DOMAIN}/backend-api/graph/totalusers`, {
-        withCredentials: true,
-      });
+      return axios.get(
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/graph/totalusers`,
+        {
+          withCredentials: true,
+        }
+      );
     },
   });
 

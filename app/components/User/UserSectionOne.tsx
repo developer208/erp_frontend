@@ -26,9 +26,9 @@ export default function UserSectionOne({}: Props) {
     queryKey: ["users"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/auth/users?role=${decodeRole(
-          role
-        )}&department=${dept}`,
+        `${
+          process.env.NEXT_PUBLIC_DOMAIN
+        }/backend-api/auth/users?role=${decodeRole(role)}&department=${dept}`,
         {
           withCredentials: true,
         }
@@ -39,7 +39,7 @@ export default function UserSectionOne({}: Props) {
   const delMutation = useMutation({
     mutationFn: (No: string) => {
       return axios.delete(
-        `${process.env.DOMAIN}/backend-api/admin/delete?rollNo=${No}`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/admin/delete?rollNo=${No}`,
         {
           withCredentials: true,
         }
@@ -65,7 +65,7 @@ export default function UserSectionOne({}: Props) {
     queryKey: ["departments"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/department/all-department`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/department/all-department`,
         {
           withCredentials: true,
         }

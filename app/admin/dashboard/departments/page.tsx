@@ -28,7 +28,7 @@ export default function Page(Props: props) {
     queryKey: ["departments"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/department/all-department`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/department/all-department`,
         {
           withCredentials: true,
         }
@@ -40,7 +40,7 @@ export default function Page(Props: props) {
     mutationKey: ["addDept"],
     mutationFn: (info: deptInfo) => {
       return axios.post(
-        `${process.env.DOMAIN}/backend-api/department/add-department`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/department/add-department`,
         info,
         {
           withCredentials: true,
@@ -62,7 +62,7 @@ export default function Page(Props: props) {
     mutationKey: ["delDept"],
     mutationFn: (code: string) => {
       return axios.delete(
-        `${process.env.DOMAIN}/backend-api/department/delete-department?code=${code}`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/department/delete-department?code=${code}`,
         {
           withCredentials: true,
         }
@@ -84,7 +84,7 @@ export default function Page(Props: props) {
     mutationKey: ["editDept"],
     mutationFn: (code: string) => {
       return axios.put(
-        `${process.env.DOMAIN}/backend-api/department/edit-department?code =${code}`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/department/edit-department?code =${code}`,
         { name, code },
         {
           withCredentials: true,

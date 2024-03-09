@@ -23,7 +23,7 @@ const Page = (props: Props) => {
     queryKey: ["professors"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/admin/professors?department=${dept}`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/admin/professors?department=${dept}`,
         {
           withCredentials: true,
         }
@@ -35,7 +35,7 @@ const Page = (props: Props) => {
     queryKey: ["departments"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/department/all-department`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/department/all-department`,
         {
           withCredentials: true,
         }

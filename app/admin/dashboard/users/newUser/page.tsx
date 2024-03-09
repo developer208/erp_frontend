@@ -17,7 +17,7 @@ export default function Dashboard(Props: props) {
     queryKey: ["departments"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/department/all-department`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/department/all-department`,
         {
           withCredentials: true,
         }
@@ -50,7 +50,7 @@ export default function Dashboard(Props: props) {
     mutationKey: ["Register"],
     mutationFn: () => {
       return axios.post(
-        `${process.env.DOMAIN}/backend-api/auth/register`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/auth/register`,
         {
           firstName,
           middleName,
@@ -86,7 +86,7 @@ export default function Dashboard(Props: props) {
     mutationFn: () => {
       console.log(formData.get("file"));
       return axios.post(
-        `${process.env.DOMAIN}/backend-api/auth/registerMultiple`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/auth/registerMultiple`,
         formData,
         {
           withCredentials: true,

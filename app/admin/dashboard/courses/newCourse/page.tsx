@@ -18,7 +18,7 @@ export default function Page(Props: props) {
     queryKey: ["departments"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/department/all-department`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/department/all-department`,
         {
           withCredentials: true,
         }
@@ -37,7 +37,7 @@ export default function Page(Props: props) {
     mutationKey: ["AddCourse"],
     mutationFn: () => {
       return axios.post(
-        `${process.env.DOMAIN}/backend-api/course/add-course`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/course/add-course`,
         {
           id,
           course_name,
@@ -66,7 +66,7 @@ export default function Page(Props: props) {
     mutationFn: () => {
       console.log(formData.get("file"));
       return axios.post(
-        `${process.env.DOMAIN}/backend-api/course/add-multiple-course`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/course/add-multiple-course`,
         formData,
         {
           withCredentials: true,

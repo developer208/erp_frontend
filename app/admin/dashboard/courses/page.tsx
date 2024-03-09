@@ -25,7 +25,7 @@ export default function Course() {
     queryKey: ["courses"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/course/all-courses?sem=${sem}&department=${dept}`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/course/all-courses?sem=${sem}&department=${dept}`,
         {
           withCredentials: true,
         }
@@ -40,7 +40,7 @@ export default function Course() {
     queryKey: ["departments"],
     queryFn: () => {
       return axios.get(
-        `${process.env.DOMAIN}/backend-api/department/all-department`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/department/all-department`,
         {
           withCredentials: true,
         }
@@ -51,7 +51,7 @@ export default function Course() {
     mutationKey: ["Delete-Course"],
     mutationFn: (id: string) => {
       return axios.delete(
-        `${process.env.DOMAIN}/backend-api/course/del-course?id=${id}`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/course/del-course?id=${id}`,
         {
           withCredentials: true,
         }
