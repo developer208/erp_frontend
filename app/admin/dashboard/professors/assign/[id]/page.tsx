@@ -84,7 +84,7 @@ export default function Enroll() {
     { field: "sem" },
     { field: "department_name" },
     {
-      field: "Add",
+      field: "Assign",
       cellRenderer: (props: ValueGetterParams) => (
         <AddToCourse func={handleAdd} {...props} />
       ),

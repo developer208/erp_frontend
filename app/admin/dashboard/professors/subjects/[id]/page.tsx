@@ -85,16 +85,6 @@ export default function Subjects() {
               <div className="w-[250px] ml-5 ">
                 <h1 className="text-2xl text-white">Courses</h1>
               </div>
-              <div className="mr-5">
-                <Link href="/admin/dashboard/courses/newCourse">
-                  <button className="w-[150px] flex items-center gap-x-2 text-black rounded-3xl bg-purple-400 h-[42px]  active:bg-purple-500">
-                    <div className="ml-3">
-                      <BsPlusLg size={20} />
-                    </div>
-                    <p className="">Add Course</p>
-                  </button>
-                </Link>
-              </div>
             </div>
             <div className="flex justify-between flex-col-reverse gap-y-3 lg:flex-row lg:gap-y-0 mb-5">
               <div className="flex gap-x-3 ml-5">

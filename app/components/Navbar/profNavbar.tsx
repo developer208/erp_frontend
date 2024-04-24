@@ -40,8 +40,8 @@ export default function ProfNavbar({}: Props) {
   });
 
   return (
-    <div className="border-b-2 fixed w-[100vw]   z-10  shadow-xl ">
-      <nav className="text-black   h-[70px] w-[100vw] bg-[white] flex justify-between  ">
+    <div className=" fixed w-[100vw]   z-30  shadow-xl ">
+      <nav className="text-black   h-[70px] w-[100vw] bg-gradient-to-r from-white to-[#1b2845] flex justify-between  ">
         <div className="flex lg:gap-x-28">
           <div className="w-[70px] flex items-center hover:cursor-pointer mx-5  font-bold ">
             VIT
@@ -54,42 +54,39 @@ export default function ProfNavbar({}: Props) {
             </Link>
             <Link href={`/professor/dashboard/${params.id}/students`}>
               <div className="hover:cursor-pointer hover:font-bold">
-                Student
+                Students
               </div>
             </Link>
-            <Link href="/admin/dashboard/courses">
-              <div className="hover:cursor-pointer hover:font-bold">Result</div>
-            </Link>
-            <Link href={`/professor/dashboard/${params.id}`}>
+            <Link href={`/professor/dashboard/${params.id}/academics`}>
               <div className="hover:cursor-pointer hover:font-bold">
-                Attendence
+                Academics
               </div>
             </Link>
           </div>
         </div>
         <div className="w-[130px]  lg:w-[130px]  flex items-center lg:justify-start lg:gap-2 hover:cursor-pointer justify-around mx-5 ">
           <div className=" hover:font-bold">
-            <PiUserCircle size={28} />
+            <PiUserCircle size={28} className="text-white" />
           </div>
           <div
             onClick={() => {
               mutation.mutate();
             }}
-            className=" hidden lg:flex hover:font-bold "
+            className=" hidden lg:flex hover:font-bold text-white "
           >
             Logout
           </div>
 
           {hamburgerState ? (
             <div
-              className="lg:hidden ml-3 "
+              className="lg:hidden ml-3  text-white"
               onClick={() => setHamburgerState(!hamburgerState)}
             >
               <RxHamburgerMenu size={28} />
             </div>
           ) : (
             <div
-              className="lg:hidden ml-3"
+              className="lg:hidden ml-3 text-white"
               onClick={() => setHamburgerState(!hamburgerState)}
             >
               <RxCross1 size={28} />
@@ -100,13 +97,13 @@ export default function ProfNavbar({}: Props) {
       <div
         className={
           hamburgerState
-            ? "bg-[white] w-full  flex flex-col  lg:hidden absolute top-[-400px] "
-            : "bg-[white] w-full  flex flex-col  lg:hidden absolute top-[70px]"
+            ? "bg-gradient-to-r from-white to-[#1b2845]  w-full  flex flex-col  lg:hidden absolute top-[-400px] "
+            : "bg-gradient-to-r from-white to-[#1b2845]  w-full  flex flex-col  lg:hidden absolute top-[70px]"
         }
       >
         <Link href={`/professor/dashboard/${params.id}`}>
           <div
-            className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-black"
+            className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
             onClick={() => setHamburgerState(!hamburgerState)}
           >
             Dashboard
@@ -114,31 +111,23 @@ export default function ProfNavbar({}: Props) {
         </Link>
         <Link href={`/professor/dashboard/${params.id}/students`}>
           <div
-            className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-black"
+            className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
             onClick={() => setHamburgerState(!hamburgerState)}
           >
-            Student
+            Students
           </div>
         </Link>
-        <Link href={`/professor/dashboard/${params.id}`}>
+        <Link href={`/professor/dashboard/${params.id}/academics`}>
           <div
-            className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-black"
+            className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
             onClick={() => setHamburgerState(!hamburgerState)}
           >
-            Result
-          </div>
-        </Link>
-        <Link href={`/professor/dashboard/${params.id}`}>
-          <div
-            className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-black"
-            onClick={() => setHamburgerState(!hamburgerState)}
-          >
-            Attendence
+            Academics
           </div>
         </Link>
 
         <div
-          className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-black"
+          className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
           onClick={() => {
             mutation.mutate();
           }}

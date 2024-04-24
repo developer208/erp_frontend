@@ -13,7 +13,7 @@ export default function UserLayout({
     window.scrollTo(0, 0);
   }, []);
   return (
-    <section className="bg-[#DDDCDC]">
+    <section className="bg-[#DDDCDC] overflow-x-hidden ">
       <ProfNavbar />
       {children}
     </section>

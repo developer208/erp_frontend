@@ -143,3 +143,11 @@ export function CourseDeleteButton(props: customCourseData) {
     </button>
   );
 }
+
+export function StudentDetails() {
+  return (
+    <button className="text-white font-bold w-[80px] h-[30px] flex items-center justify-center mt-[5px] rounded-2xl bg-blue-600  hover:bg-blue-800">
+      View
+    </button>
+  );
+}
