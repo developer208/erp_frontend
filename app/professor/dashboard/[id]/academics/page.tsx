@@ -55,6 +55,8 @@ const Page = (props: Props) => {
     },
   });
 
+
+
   const handleEnroll = (props: fullUserData) => {
     router.push(`/admin/dashboard/students/enroll/${props.id}`);
   };
@@ -88,7 +90,7 @@ const Page = (props: Props) => {
     mutationKey: ["result-data"],
     mutationFn: () => {
       return axios.post(
-        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api`,
+        `${process.env.NEXT_PUBLIC_DOMAIN}/backend-api/result/add-multiple`,
         formData,
         {
           withCredentials: true,
@@ -100,7 +102,6 @@ const Page = (props: Props) => {
     },
     onSuccess(data, variables, context) {
       toast.success(data.data.msg);
-      router.push("/admin/dashboard/users");
     },
     onError(error: CustomAxiosError, variables, context) {
       let message: string = error.response?.data?.msg
@@ -134,6 +135,7 @@ const Page = (props: Props) => {
       toast.error(message);
     },
   });
+  
 
   const handleFileChange = (e: any) => {
     const selectedFile = e.target.files[0];
@@ -146,7 +148,7 @@ const Page = (props: Props) => {
       formData.append("file", file);
     }
     console.log(file);
-    mutation1.mutate();
+    mutation.mutate();
   };
 
   const handleFileChange1 = (e: any) => {

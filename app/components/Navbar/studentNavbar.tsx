@@ -8,10 +8,12 @@ import { useMutation } from "@tanstack/react-query";
 import { CustomAxiosError } from "@/app/utils/customError";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 type Props = {};
 
 export default function StudNavbar({}: Props) {
   const router = useRouter();
+  const params = useParams<{ id: string }>();
   const mutation = useMutation({
     mutationKey: ["Logout"],
     mutationFn: () => {
@@ -39,25 +41,30 @@ export default function StudNavbar({}: Props) {
   const [hamburgerState, setHamburgerState] = useState(true);
   return (
     <div className="border-b-2 fixed w-[100vw]   z-10  border-gray-700">
-      <nav className="text-white   h-[70px] w-[100vw] bg-[#0077b6] flex justify-between bg-opacity-20 backdrop-filter backdrop-blur-lg   ">
+      <nav className="text-white   h-[70px] w-[100vw] flex justify-between bg-gradient-to-r from-gray-600 to-gray-900">
         <div className="flex lg:gap-x-28">
           <div className="w-[70px] flex items-center hover:cursor-pointer mx-5  font-bold ">
             VIT
           </div>
           <div className="lg:flex w-[700px]  gap-x-16 lg:items-center hidden   ">
-            <Link href="/admin/dashboard">
+            <Link href={`/student/dashboard/${params.id}`}>
               <div className="hover:cursor-pointer hover:text-black">
                 Dashboard
               </div>
             </Link>
-            <Link href="/admin/dashboard/courses">
+            <Link href={`/student/dashboard/${params.id}/result`}>
               <div className="hover:cursor-pointer hover:text-black">
                 Result
               </div>
             </Link>
-            <Link href="/admin/dashboard/departments">
+            <Link href={`/student/dashboard/${params.id}/attendence`}>
               <div className="hover:cursor-pointer hover:text-black">
                 Attendence
+              </div>
+            </Link>
+            <Link href="http://localhost:8501">
+              <div className="hover:cursor-pointer hover:text-black">
+                Recommendation
               </div>
             </Link>
           </div>
@@ -98,7 +105,7 @@ export default function StudNavbar({}: Props) {
             : "bg-[#212529] w-full  flex flex-col  lg:hidden absolute top-[70px]"
         }
       >
-        <Link href="/admin/dashboard">
+        <Link href={`/student/dashboard/${params.id}`}>
           <div
             className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
             onClick={() => setHamburgerState(!hamburgerState)}
@@ -106,7 +113,7 @@ export default function StudNavbar({}: Props) {
             Dashboard
           </div>
         </Link>
-        <Link href="/admin/dashboard/courses">
+        <Link href={`/student/dashboard/${params.id}/result`}>
           <div
             className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
             onClick={() => setHamburgerState(!hamburgerState)}
@@ -114,12 +121,20 @@ export default function StudNavbar({}: Props) {
             Result
           </div>
         </Link>
-        <Link href="/admin/dashboard/departments">
+        <Link href={`/student/dashboard/${params.id}/attendence`}>
           <div
             className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
             onClick={() => setHamburgerState(!hamburgerState)}
           >
             Attendence
+          </div>
+        </Link>
+        <Link href="http://localhost:8501">
+          <div
+            className="hover:cursor-pointer border  border-gray-700 py-3 w-full flex justify-center text-white"
+            onClick={() => setHamburgerState(!hamburgerState)}
+          >
+             Recommendation
           </div>
         </Link>
         <Link href="/">
